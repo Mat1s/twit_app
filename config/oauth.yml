@@ -1,0 +1,4 @@
+development: &defaults
+  :twitter:
+    :api_id: 'HyaDkAWqgrZnNhBJyJWRFFwD1'
+    :api_secret: 'P82u41dcVuXC5IaGylvO7pMXsE0mp8lnkJRmTGnPQFoELVrJgx'

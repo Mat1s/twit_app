@@ -1,0 +1,28 @@
+<%=link_to "Sign out", logout_path, method: :delete, confirm: "Are you sure?" %>
+
+<%= form_for @post do |f| %>
+ 	
+ 	<%= f.label :body %>
+ 	<%= f.text_field :body, placeholder: "twitt text", maxlength: 140 %>
+
+	<%=f.file_field :image %>
+
+	<%= f.submit "Twitt!" %>
+<% end %>
+
+<% if @posts %>
+	<% @posts.each do |post| %>
+		<% if post.image %>
+			<%= image_tag("#{post.image}", size: 50) %>
+		<% end %>
+		<%= post.body %><br>
+		<a><%= link_to "go to twitter", post.link_to_twitter %></a><br>
+	<% end %>
+<% end %>
+
+<ol><% @home_timeline.each do |tl| %></ol>
+	<li><%= tl.text %></li><br>
+<% end %>
+
+
+
