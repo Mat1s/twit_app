@@ -9,9 +9,20 @@
   </head>
 
   <body>
-  	<% flash.each do |message_type, message| %>
-      <%= content_tag(:div, message, class: "alert alert-#{message_type}")%>
-    <% end %>
-    <%= yield %>
+    <div id="main-container" class="container-fluid">
+      <% flash.each do |message_type, message| %>
+        <%= content_tag(:div, message, class: "alert alert-#{message_type}")%>
+      <% end %>
+      <div class="row">
+        <div class="page-header text-center">
+          <h1>Welcome to twitt_app!</h1>
+          <%= render 'layouts/header' %>
+        </div>
+      </div>
+      <div class="row">
+        <%= yield %>
+      </div>
+    </div>
+    
   </body>
 </html>

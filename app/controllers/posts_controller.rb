@@ -1,35 +1,53 @@
 class PostsController < ApplicationController
-  before_action :check_entity 
+  before_action :check_session 
+  
   def index
   	@posts = Post.order('id DESC')
   	@post = Post.new
-  	@home_timeline = get_client.home_timeline(count: 10)
   end
 
   def create
   	@post = @current_user.posts.new(permit_params)
-  	if @post.save
-  		@post.upload_image(params[:post][:image]) if params[:post][:image]
-	  		if @post.image
-	  			get_client.update_with_media("#{@post.body}", File.new("public/#{@post.image}"))
-	  		else
-	  			get_client.update("#{@post.body}")
-	  		end
-			link = get_client.home_timeline(count: 1).first.text
-      @post.update_link(link)
-  		flash.now[:success] = "Twit successfully created"
-  		redirect_to posts_path	
-  	else
-  		redirect_to root_url
-  		flash[:notice] = "Not valid params"
-  	end
+    if params[:post][:image]
+      if !params[:post][:image].content_type.match(/^image\S*/i)
+        #!params[:post][:image].original_filename.match(/\S*.(jpg|jpeg|gif|bmp|tiff|png)$/i)
+        flash[:warning] = "You must choose only image"
+        params[:post][:image] = nil
+        redirect_to root_url
+      elsif params[:post][:image].size > 5242879
+        flash[:warning] = "Size of upload picture is very large"
+        redirect_to root_url
+      else 
+        image = @post.create_twitt(get_client, params[:user_id], 
+          params[:post][:body], params[:post][:image])
+        @post.save
+        homeline = get_client.home_timeline(count: 1).first.text
+        link = homeline[/https:\/\/t.co\/\S*/]
+        @post.update_par(link, image)
+        flash[:success] = "Create twit with image"
+        redirect_to posts_path
+      end
+    else
+      image = @post.create_twitt(get_client, params[:user_id], 
+          params[:post][:body])
+      @post.save
+      homeline = get_client.home_timeline(count: 1).first.text
+      link = homeline[/https:\/\/t.co\/\S*/]
+      @post.update_par(link, image)
+       flash[:success] = "Create twit without image"
+      redirect_to posts_path
+    end
   end
+    
+  protected
 
-  private
-
-  def check_entity
+  def check_session
   	redirect_to root_url if !session[:current_user]
    	@current_user = User.find(session[:current_user])
+    rescue ActiveRecord::RecordNotFound => e
+    if e
+      flash[:warning] = "Please, log in"
+    end
   end
 
   def permit_params

@@ -1,0 +1,25 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+body {
+   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+th, td {
+    border-style: none;
+    border-collapse: collapse;
+}
+tr {
+	border: 1px solid gray;
+}
+
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Upload image';
+ }
+ ul {
+ 	list-style-type: none;
+ 	padding: 0;
+ 	margin: 0;
+ }

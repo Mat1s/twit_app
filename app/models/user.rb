@@ -4,9 +4,12 @@ class User < ApplicationRecord
 	private
 	def self.find_or_create_by_auth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-        user.update(name: auth.info.name, uid: auth.uid,
-        provider: auth.provider, image: auth.info.image,
-        token: auth.credentials.token, secret: auth.credentials.secret)
+        user.name = auth.info.nickname || auth.info.name
+        user.uid = auth.uid
+        user.provider = auth.provider
+        user.image = auth.info.image
+        user.token = auth.credentials.token
+        user.secret = auth.credentials.secret
       end
     end
 end

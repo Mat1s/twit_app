@@ -1,28 +1,33 @@
-<%=link_to "Sign out", logout_path, method: :delete, confirm: "Are you sure?" %>
+<div class="row">
+	<%= render 'form' %>
+</div>
+<div class="row">
+	<div class="col-lg-4 col-md-3 col-sm-2">
+	</div>
+	<div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+		<% if @posts %>
+			<ul class="list-group">
+		  	<% @posts.each do |post| %>
+					<li class="list-group-item clearfix" style="margin: 10px">
+						
+						
+						<%= image_tag "#{post.image}", height: "60", width: "auto", style: "float: left", alt: 'no image' %>
 
-<%= form_for @post do |f| %>
- 	
- 	<%= f.label :body %>
- 	<%= f.text_field :body, placeholder: "twitt text", maxlength: 140 %>
-
-	<%=f.file_field :image %>
-
-	<%= f.submit "Twitt!" %>
-<% end %>
-
-<% if @posts %>
-	<% @posts.each do |post| %>
-		<% if post.image %>
-			<%= image_tag("#{post.image}", size: 50) %>
+						<p class="list-group-item-heading" style="overflow: auto; padding: 3px;"><%= post.body %></p>
+						<div style="text-align: right;">
+							<p class="list-group-item-text">
+								<%= post.created_at %>
+								<%= link_to "View", post.link_to_twitter %>
+							</p>
+						</div>
+						
+					</li>
+				<% end %>
+			</ul>
 		<% end %>
-		<%= post.body %><br>
-		<a><%= link_to "go to twitter", post.link_to_twitter %></a><br>
-	<% end %>
-<% end %>
-
-<ol><% @home_timeline.each do |tl| %></ol>
-	<li><%= tl.text %></li><br>
-<% end %>
-
+	</div>
+	<div class="col-lg-4 col-md-3 col-sm-2">
+	</div>
+</div>
 
 
