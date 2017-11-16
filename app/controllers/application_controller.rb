@@ -10,5 +10,11 @@ class ApplicationController < ActionController::Base
   # def render_404
   # 	redirect_to root_url
   # end
+  rescue_from ActionController::InvalidAuthenticityToken, with: :redirect
+
+  def redirect
+    flash[:warning] = "Please sign in"
+    redirect_to root_url
+  end
 end
 

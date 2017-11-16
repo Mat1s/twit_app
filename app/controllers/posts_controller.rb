@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :check_session 
   
   def index
-  	@posts = Post.order('id DESC')
+  	@posts = Post.order('id DESC').page params[:page]
   	@post = Post.new
   end
 
@@ -21,8 +21,8 @@ class PostsController < ApplicationController
         image = @post.create_twitt(get_client, params[:user_id], 
           params[:post][:body], params[:post][:image])
         @post.save
-        homeline = get_client.home_timeline(count: 1).first.text
-        link = homeline[/https:\/\/t.co\/\S*/]
+        userline = get_client.home_timeline(count: 1).first.text
+        link = userline[/https:\/\/t.co\/\S*/]
         @post.update_par(link, image)
         flash[:success] = "Create twit with image"
         redirect_to posts_path
@@ -31,7 +31,7 @@ class PostsController < ApplicationController
       image = @post.create_twitt(get_client, params[:user_id], 
           params[:post][:body])
       @post.save
-      homeline = get_client.home_timeline(count: 1).first.text
+      homeline = get_client.user_timeline(@current_user.uid).first.text
       link = homeline[/https:\/\/t.co\/\S*/]
       @post.update_par(link, image)
        flash[:success] = "Create twit without image"

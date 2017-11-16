@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
 	belongs_to :user
 	validates :body, presence: true, length: 1..140
-	
+	paginates_per 10
 
 	def create_twitt(twitt_user, id, body, *img)
 		begin
