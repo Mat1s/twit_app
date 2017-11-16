@@ -1,19 +1,18 @@
 ENV['RAILS_ENV'] = 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-#require 'spec/autotrun'
 OmniAuth.config.test_mode = true
 OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new({
   provider: "twitter",
-  uid: "23412",
-  info: {
-    nickname: "johndire",
-    name: "John D",
-    image: "http://si0.twimg.com/sticky/default_profile_images/default_profile_2_normal.png"
+  'uid': "23412",
+  'info': {
+    'nickname': "johndire",
+    'name': "John D",
+    'image': "http://si0.twimg.com/sticky/default_profile_images/default_profile_2_normal.png"
   },
-  credentials: {
-    token: "K4DwAgAAAAAA2_0aAAABX8Gdl85", # The OAuth 2.0 access token
-    secret: "neFkwZFUSuMQHXJ9CoDF2u02jxzIeQo6"
+  'credentials': {
+    'token': "K4DwAgAAAAAA2_0aAAABX8Gdl85", # The OAuth 2.0 access token
+    'secret': "neFkwZFUSuMQHXJ9CoDF2u02jxzIeQo6"
   }
 })
 

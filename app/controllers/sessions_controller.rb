@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   
   def create
-    @user = User.find_or_create_by_auth(auth_hash)
+    @user = User.find_or_create_by_auth(request.env["omniauth.auth"])
   	session[:current_user] = @user.id
   	flash[:success] = "User successfully authenticate"
   	redirect_to root_url 
